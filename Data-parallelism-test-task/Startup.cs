@@ -1,8 +1,8 @@
 ﻿using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(DataParallelismTest.Startup))]
-namespace DataParallelismTest
+[assembly: OwinStartupAttribute(typeof(ConcurrencyTest.Startup))]
+namespace ConcurrencyTest
 {
     public partial class Startup
     {

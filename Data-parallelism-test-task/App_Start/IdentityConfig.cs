@@ -10,9 +10,9 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
-using DataParallelismTest.Models;
+using ConcurrencyTest.Models;
 
-namespace DataParallelismTest
+namespace ConcurrencyTest
 {
     public class EmailService : IIdentityMessageService
     {

@@ -5,9 +5,9 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
-using DataParallelismTest.Models;
+using ConcurrencyTest.Models;
 
-namespace DataParallelismTest
+namespace ConcurrencyTest
 {
     public partial class Startup
     {

@@ -1,92 +1,109 @@
-﻿using DataParallelismTest.Models;
+﻿using ConcurrencyTest.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using ConcurrencyTest.Repository;
+using System.Configuration;
+using System.Threading.Tasks;
 
-namespace DataParallelismTest.Controllers
-{
-    public class XController : Controller
-    {
+namespace ConcurrencyTest.Controllers {
+    [Authorize]
+    public class XController : Controller {
         // GET: X
-        public ActionResult Index()
-        {
-            var context = ApplicationDbContext.Create();
+        public async Task<ActionResult> Index() {
+            ViewBag.Message = TempData["Message"];
+            TempData["Message"] = string.Empty;
+            using (SqlXRepository repository = new SqlXRepository()) {
 
-            return View(new List<EntityX>());
+                var items = (await repository.GetListAsync()).ToList();
+                return View(items);
+            }
+
         }
 
-        // GET: X/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
         // GET: X/Create
-        public ActionResult Create()
-        {
+        public ActionResult Create() {
             return View();
         }
 
         // POST: X/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
+        public async Task<ActionResult> Create(EntityX model) {
+            try {
+                using (SqlXRepository repository = new SqlXRepository()) {
+                    await repository.CreateAsync(model).ConfigureAwait(false);
+                }
+                TempData["Message"] = $"{model.Name} created.";
                 return RedirectToAction("Index");
-            }
-            catch
-            {
+            } catch {
                 return View();
             }
         }
 
         // GET: X/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
+        public async Task<ActionResult> Edit(int id) {
+            using (SqlXRepository repository = new SqlXRepository()) {
+                try {
+                    var model = await repository.ReadAsync(id).ConfigureAwait(false);
+                    return View(model);
+
+                } catch (Exception ex) {
+                    TempData["Message"] = $"There was an error updating record: {id}";
+                    return RedirectToAction("Index");
+                }
+            }
         }
 
         // POST: X/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
+        public async Task<ActionResult> Edit(EntityX model) {
+            try {
+                using (SqlXRepository repository = new SqlXRepository()) {
+                    try {
+                        await repository.UpdateAsync(model).ConfigureAwait(false);
+                        TempData["Message"] = $"{model.Name} updated successfully.";
+                    } catch (ConcurrencyException ex) {
+                        var merge = new MergeEntityX {
+                            NewItem = model,
+                            SavedItem = await repository.ReadAsync(model.Id),
+                        };
+                        return View("EditMerge", merge);
+                    } catch (Exception ex) {
+                        TempData["Message"] = $"There was an error updating record: {model.Id}";
+                    }
+                }
+                return RedirectToAction("Index");
+            } catch (Exception ex) {
+                TempData["Message"] = $"Cannot update {model.Name}.";
                 return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
         }
-
-        // GET: X/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: X/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
+        public async Task<ActionResult> EditMerge(MergeEntityX model) {
 
-                return RedirectToAction("Index");
+
+            var newModel = model.SavedItem;
+            if (model.UpdateName)
+                newModel.Name = model.NewItem.Name;
+            if (model.UpdatePrice)
+                newModel.Price = model.NewItem.Price;
+            return await Edit(newModel);
+            
+        }
+        // GET: X/Delete/5
+        public async Task<ActionResult> Delete(int id) {
+            using (SqlXRepository repository = new SqlXRepository()) {
+                try {
+                    await repository.DeleteAsync(id).ConfigureAwait(false);
+                    TempData["Message"] = "Record deleted successfully.";
+                } catch (Exception ex) {
+                    TempData["Message"] = $"There was an error deleting record: {id}";
+                }
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
     }
 }

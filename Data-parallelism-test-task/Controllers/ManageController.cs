@@ -6,9 +6,9 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
-using DataParallelismTest.Models;
+using ConcurrencyTest.Models;
 
-namespace DataParallelismTest.Controllers
+namespace ConcurrencyTest.Controllers
 {
     [Authorize]
     public class ManageController : Controller

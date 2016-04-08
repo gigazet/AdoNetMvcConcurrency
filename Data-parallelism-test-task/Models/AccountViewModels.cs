@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DataParallelismTest.Models
+namespace ConcurrencyTest.Models
 {
     public class ExternalLoginConfirmationViewModel
     {

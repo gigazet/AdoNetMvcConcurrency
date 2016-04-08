@@ -1,0 +1,77 @@
+﻿@model ConcurrencyTest.Models.MergeEntityX
+
+@{
+    ViewBag.Title = "Merge " + Model.SavedItem.Id;
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+@using (Html.BeginForm("EditMerge","X")) {
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>X Optimistic conflict merge</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.SavedItem.Id)
+        @Html.HiddenFor(model => model.SavedItem.RowVersion)
+        @Html.HiddenFor(model => model.SavedItem.Name)
+        @Html.HiddenFor(model => model.SavedItem.Price)
+        @Html.HiddenFor(model => model.NewItem.Name)
+        @Html.HiddenFor(model => model.NewItem.Price)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NewItem.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.TextBox("Name1", Model.SavedItem.Name, new { @class = "form-control", @readonly = "readonly" })
+
+            </div>
+
+            <div class="col-md-4">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        @Html.CheckBoxFor(model => model.UpdateName)
+                    </span>
+                    @Html.TextBox("Name2", Model.NewItem.Name, new { @class = "form-control", @readonly = "readonly" })
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.NewItem.Price, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-4">
+                @Html.TextBox("Price1", Model.SavedItem.Price, new { @class = "form-control", @readonly = "readonly" })
+
+            </div>
+
+            <div class="col-md-4">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        @Html.CheckBoxFor(model => model.UpdatePrice)
+                    </span>
+                    @Html.TextBox("Price2", Model.NewItem.Price, new { @class = "form-control", @readonly = "readonly" })
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
