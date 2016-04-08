@@ -170,6 +170,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\YController.cs" />
     <Compile Include="Controllers\XController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -184,6 +185,7 @@
     <Compile Include="Repository\ConcurrencyException.cs" />
     <Compile Include="Repository\ICrudRepository.cs" />
     <Compile Include="Repository\MsSql.cs" />
+    <Compile Include="Repository\SqlYRepository.cs" />
     <Compile Include="Repository\SqlXRepository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -200,7 +202,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Description.md" />
+    <Content Include="Readme.md" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -249,6 +251,9 @@
     <Content Include="Views\X\Create.cshtml" />
     <Content Include="Views\X\Edit.cshtml" />
     <Content Include="Views\X\EditMerge.cshtml" />
+    <Content Include="Views\Y\Create.cshtml" />
+    <Content Include="Views\Y\Edit.cshtml" />
+    <Content Include="Views\Y\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

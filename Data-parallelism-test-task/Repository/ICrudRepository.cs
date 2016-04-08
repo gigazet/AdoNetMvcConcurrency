@@ -26,7 +26,7 @@ namespace ConcurrencyTest.Repository {
         /// Read single entry from database.
         /// </summary>
         /// <returns></returns>
-        Task<T> ReadAsync(int id); 
+        Task<T> ReadAsync(int id,string lockBy=""); 
 
         /// <summary>
         /// Add new entry to database. Automatically generate Id increment.
@@ -49,7 +49,7 @@ namespace ConcurrencyTest.Repository {
         /// <param name="id"></param>
         /// <returns></returns>
         /// <exception cref="SqlException">If record not exists</exception>
-        Task DeleteAsync(int id); 
+        Task DeleteAsync(int id, string lockBy = ""); 
     }
 
     

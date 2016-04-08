@@ -1,19 +1,23 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace ConcurrencyTest.Models {
 
     /// <summary>
-    /// Y entity will match "Customer".
+    /// Y entity will match abstract Product with name and price.
     /// Should use pessimistic lock.
     /// </summary>
     public class EntityY {
-        public int Id;
-        public string FullName;
-        public string Email;
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public decimal Price { get; set; }
         /// <summary>
-        /// Last user name who modified this object
+        /// User name who modifying this object
         /// </summary>
-        public string LockedBy;
+        [Required]
+        [Display(Name = "Locked by")]
+        public string LockedBy { get; set; }
+        public string LockDate { get; set; }
     }
 }

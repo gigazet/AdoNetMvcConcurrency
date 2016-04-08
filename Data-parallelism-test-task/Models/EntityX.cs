@@ -12,7 +12,12 @@ namespace ConcurrencyTest.Models {
     public class EntityX {
        
         public int Id { get; set; }
+        [Required]
+        [Display(Name = "Name")]
         public string Name { get; set; }
+
+        [Required]
+        [Display(Name = "Price")]
         public decimal Price { get; set; }
        
         /// <summary>

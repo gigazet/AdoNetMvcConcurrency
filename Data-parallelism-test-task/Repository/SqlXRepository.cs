@@ -10,7 +10,7 @@ namespace ConcurrencyTest.Repository {
 
     public class SqlXRepository : ICrudRepository<EntityX> {
 
-        SqlConnection _cn;
+        readonly SqlConnection _cn;
 
         public SqlXRepository() {
             _cn = new SqlConnection(ConfigurationManager.ConnectionStrings[1].ToString());
@@ -39,7 +39,7 @@ namespace ConcurrencyTest.Repository {
             }
         }
 
-        public async Task<EntityX> ReadAsync(int id) {
+        public async Task<EntityX> ReadAsync(int id, string lockBy = "") {
             using (var cmd = MsSql.NewCommand(_cn, "procReadX")) {
                 cmd.Parameters["@id"].Value = id;
 
@@ -87,7 +87,7 @@ namespace ConcurrencyTest.Repository {
             }
         }
 
-        public async Task DeleteAsync(int id) {
+        public async Task DeleteAsync(int id,string lockBy="") {
             //Delete do not check for concurrency here,it just deletes the record.
             using (var cmd = MsSql.NewCommand(_cn, "procDeleteX")) {
                 cmd.Parameters["@id"].Value = id;
